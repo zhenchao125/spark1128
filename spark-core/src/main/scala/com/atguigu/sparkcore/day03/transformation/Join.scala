@@ -1,13 +1,12 @@
-package com.atguigu.sparkcore.day03
+package com.atguigu.sparkcore.day03.transformation
 
-import org.apache.spark.rdd.RDD
 import org.apache.spark.{SparkConf, SparkContext}
 
 /**
   * Author lzc
   * Date 2019-04-26 10:46
   */
-object CoGroup {
+object Join {
     def main(args: Array[String]): Unit = {
         var arr1 = Array(("a", 1), ("b", 10), ("b", 20), ("a", 2), ("c", 10))
         var arr2 = Array(("a", 11), ("b", 101), ("b", 200), ("a", 21), ("d", 100))
@@ -16,13 +15,13 @@ object CoGroup {
         val sc = new SparkContext(conf)
         val rdd1 = sc.parallelize(arr1)
         val rdd2 = sc.parallelize(arr2)
-        
-        val resultRDD: RDD[(String, (Iterable[Int], Iterable[Int]))] = rdd1.cogroup(rdd2)
+//        val resultRDD: RDD[(String, (Int, Int))] = rdd1.join(rdd2)
+//        val resultRDD = rdd1.leftOuterJoin(rdd2)
+//        val resultRDD = rdd1.rightOuterJoin(rdd2)
+        val resultRDD = rdd1.fullOuterJoin(rdd2)
         
         resultRDD.collect.foreach(println)
         sc.stop()
-        
-        // 使用 cogroup 实现一个内连接
-        
-    }
+    
+}
 }
