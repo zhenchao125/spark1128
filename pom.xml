@@ -17,7 +17,6 @@
             <artifactId>spark-core_2.11</artifactId>
             <version>2.1.1</version>
         </dependency>
-
     </dependencies>
     <build>
         <plugins>
