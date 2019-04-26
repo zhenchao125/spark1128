@@ -33,6 +33,7 @@ object Day02Test {
                 (key, it.sum.toDouble / it.size)
             }
         }*/
+        
         // (key, (sum, size))
 //        val resultRDD = pairRDD.aggregateByKey((0, 0))((t, value) => (t._1 + value, t._2 + 1) , (t1, t2) => (t1._1 + t2._1, t1._2 + t2._2))
         val resultRDD = pairRDD.aggregateByKey((0, 0))({
