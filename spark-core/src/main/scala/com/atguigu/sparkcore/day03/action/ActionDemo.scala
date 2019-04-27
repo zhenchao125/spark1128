@@ -16,6 +16,7 @@ object ActionDemo {
         
         val tuples: Array[(String, Int)] = rdd1.take(2)
         tuples.foreach(println)
+        rdd1.collect
         sc.stop()
         
     }
