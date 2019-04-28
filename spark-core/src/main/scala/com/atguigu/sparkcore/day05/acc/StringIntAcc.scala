@@ -1,10 +1,10 @@
-package com.atguigu.sparkcore.day05
+package com.atguigu.sparkcore.day05.acc
 
 import org.apache.spark.util.AccumulatorV2
 
-class StringIntAcc extends AccumulatorV2[Any, (List[String], Int)]{
+class StringIntAcc extends AccumulatorV2[Any, (List[String], Int)] {
     var list = List[String]()
-    var sum  = 0
+    var sum = 0
     
     override def isZero: Boolean = list.isEmpty && sum == 0
     
@@ -21,13 +21,15 @@ class StringIntAcc extends AccumulatorV2[Any, (List[String], Int)]{
     }
     
     override def add(v: Any): Unit = v match {
-        case s: String => list :+= s
-        case i: Int =>  sum += i
+        case s: String => list :+= s  //list = list :+ s  // list = s::list
+        case i: Int => sum += i
         case _ =>
     }
     
     
     override def merge(other: AccumulatorV2[Any, (List[String], Int)]): Unit = other match {
+        
+        
         case acc: StringIntAcc =>
             list ++= acc.list
             sum += acc.sum

@@ -1,4 +1,4 @@
-package com.atguigu.sparkcore.day05
+package com.atguigu.sparkcore.day05.acc
 
 import org.apache.spark.util.AccumulatorV2
 
