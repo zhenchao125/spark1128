@@ -2,7 +2,7 @@ package com.atguigu
 
 import org.apache.spark.SparkConf
 import org.apache.spark.streaming.dstream.{DStream, ReceiverInputDStream}
-import org.apache.spark.streaming.{Seconds, StreamingContext}
+import org.apache.spark.streaming.{Minutes, Seconds, StreamingContext}
 
 /**
   * Author lzc
@@ -21,7 +21,7 @@ object WordCount {
         val dstream: ReceiverInputDStream[String] = sctx.socketTextStream("hadoop201", 10000)
         
         val wordCountDStream: DStream[(String, Int)] =
-            dstream.flatMap(_.split("\\W")).map((_, 1)).reduceByKey(_ + _)
+            dstream.flatMap(_.split("\\W+")).map((_, 1)).reduceByKey(_ + _)
         
         wordCountDStream.print
         
@@ -29,7 +29,5 @@ object WordCount {
         sctx.start()
         
         sctx.awaitTermination()
-        
     }
-    
 }
