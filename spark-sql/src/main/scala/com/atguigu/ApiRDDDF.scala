@@ -28,6 +28,5 @@ object ApiRDDDF {
         val df: DataFrame = spark.createDataFrame(rowRDD, types)
         df.show
         spark.stop()
-        //   vscode
     }
 }
