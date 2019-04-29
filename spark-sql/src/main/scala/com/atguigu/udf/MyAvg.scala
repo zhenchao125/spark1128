@@ -19,11 +19,9 @@ class MyAvg extends UserDefinedAggregateFunction {
     // 输入数据的类型  Double
     override def inputSchema: StructType = StructType(StructField("input", DoubleType) :: Nil)
     
-    
     // 缓冲区中的值的类型  Double, Int
     override def bufferSchema: StructType =
         StructType(StructField("sum", DoubleType) :: StructField("count", IntegerType) :: Nil)
-    
     
     // 最终输出的数据的类型  Double
     override def dataType: DataType = StringType
@@ -65,6 +63,4 @@ class MyAvg extends UserDefinedAggregateFunction {
         // 2000.22
         new DecimalFormat(".00").format(buffer.getDouble(0) / buffer.getInt(1))
     }
-    
-    
 }

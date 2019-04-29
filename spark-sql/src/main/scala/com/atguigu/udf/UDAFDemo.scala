@@ -1,6 +1,6 @@
 package com.atguigu.udf
 
-import org.apache.spark.sql.{DataFrame, SparkSession}
+import org.apache.spark.sql.{DataFrame, Row, SparkSession}
 
 /**
   * Author lzc
@@ -23,7 +23,7 @@ object UDAFDemo {
         df.createTempView("user")
         // 执行sql
         spark.sql("select my_avg(age) from user").show
-        
+        Row(10)
         spark.stop()
     }
 }
