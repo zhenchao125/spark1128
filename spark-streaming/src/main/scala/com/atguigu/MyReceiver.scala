@@ -35,10 +35,11 @@ class MyReceiver(host: String, port: Int) extends Receiver[String](StorageLevel.
         
         var line: String = reader.readLine()
         while(line != null){
+            // 存储到DSteam
             store(line)
             line = reader.readLine()
         }
-        
+    
         reader.close()
         socket.close()
         // 重启
@@ -48,5 +49,5 @@ class MyReceiver(host: String, port: Int) extends Receiver[String](StorageLevel.
     /*
         当Receiver结束的时候回调
      */
-    override def onStop(): Unit = ???
+    override def onStop(): Unit = {}
 }
