@@ -21,24 +21,19 @@ object HighKafka2 {
         val conf: SparkConf = new SparkConf().setMaster("local[*]").setAppName("WordCount")
         
         // 2. 使用SparkConf创建StreamingContext
-        
         val sctx = new StreamingContext(conf, Seconds(5))
         sctx.checkpoint("./ck2")
         var params: Map[String, String] = Map(
             ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG -> brokers,
             ConsumerConfig.GROUP_ID_CONFIG -> group
         )
-        
         val kafkaDStream =
             KafkaUtils.createDirectStream[String, String, StringDecoder, StringDecoder](sctx, params, Set(topic))
         kafkaDStream.print
         sctx
     }
     def main(args: Array[String]): Unit = {
-        
-        
         val ssc: StreamingContext = StreamingContext.getActiveOrCreate("./ck2", createSSC )
-    
         ssc.start()
         ssc.awaitTermination()
     }
