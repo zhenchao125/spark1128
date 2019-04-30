@@ -5,7 +5,7 @@ import kafka.message.MessageAndMetadata
 import kafka.serializer.StringDecoder
 import org.apache.kafka.clients.consumer.ConsumerConfig
 import org.apache.spark.SparkConf
-import org.apache.spark.streaming.dstream.InputDStream
+import org.apache.spark.streaming.dstream.{DStream, InputDStream}
 import org.apache.spark.streaming.kafka.KafkaCluster.Err
 import org.apache.spark.streaming.kafka.{HasOffsetRanges, KafkaCluster, KafkaUtils, OffsetRange}
 import org.apache.spark.streaming.{Seconds, StreamingContext}
@@ -15,8 +15,6 @@ import org.apache.spark.streaming.{Seconds, StreamingContext}
   * Date 2019-04-30 09:07
   */
 object LowKafka {
-    
-    
     // 读取
     def readOffset(kafkaCluster: KafkaCluster, topic: String, group: String): Map[TopicAndPartition, Long] = {
         // 最终返回的所有分区的offset信息
@@ -43,6 +41,7 @@ object LowKafka {
     
     // 保存offset
     def saveOffset(kafkaCluster: KafkaCluster, group: String, topic: String, dstream: InputDStream[String]) = {
+        // 每消费一次都是对这个DStream执行一次foreachRDD
         dstream.foreachRDD(rdd => {
             var map = Map[TopicAndPartition, Long]()
             val hasOffsetRanges: HasOffsetRanges = rdd.asInstanceOf[HasOffsetRanges]
@@ -52,7 +51,6 @@ object LowKafka {
             ranges.foreach(offsetRange => {
                 map += offsetRange.topicAndPartition() -> offsetRange.untilOffset
             })
-    
             kafkaCluster.setConsumerOffsets(group, map)
         })
     }
@@ -82,6 +80,7 @@ object LowKafka {
             fromOffset,
             (message: MessageAndMetadata[String, String]) => message.message()
         )
+        
         dstream.print(100)
         // 消费之后写入新的offset
         saveOffset(kafkaCluster, group, topic, dstream)
